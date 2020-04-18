@@ -11,6 +11,25 @@
     "moduleResolution": "node",
     "importHelpers": true,
     "target": "es2015",
+    "noImplicitReturns": true,
+    "strict": true,
+    "allowSyntheticDefaultImports": true,
+    "typeRoots": [
+      "types",
+      "node_modules/@types"
+    ],
+    "paths": {
+      "*" : [
+        "types/*",
+        "node_modules/@types"
+      ]
+    },
+    "plugins": [
+      {
+        "name": "typescript-tslint-plugin",
+        "supressWhileTypeErrorsPresent": false
+      }
+    ],
     "lib": [
       "es2018",
       "dom"
