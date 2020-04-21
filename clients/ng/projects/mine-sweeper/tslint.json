@@ -4,13 +4,13 @@
     "directive-selector": [
       true,
       "attribute",
-      "app",
+      "mswp",
       "camelCase"
     ],
     "component-selector": [
       true,
       "element",
-      "app",
+      "mswp",
       "kebab-case"
     ]
   }

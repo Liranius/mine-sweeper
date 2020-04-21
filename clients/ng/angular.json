@@ -12,7 +12,7 @@
       },
       "root": "projects/mine-sweeper",
       "sourceRoot": "projects/mine-sweeper/src",
-      "prefix": "app",
+      "prefix": "mswp",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
@@ -123,7 +123,8 @@
           }
         }
       }
-    }},
+    }
+  },
   "cli": {
     "analytics": "45e2abec-de23-4a07-a639-dd80a92e0545"
   },
