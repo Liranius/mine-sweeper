@@ -7,7 +7,8 @@ import { LoginComponent } from './core/components/login/login.component';
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
   { path: 'login', component: LoginComponent },
-  { path: 'game', loadChildren: () => import('./game/game.module').then(m => m.GameModule) }
+  { path: 'game', loadChildren: () => import('./game/game.module').then(m => m.GameModule) },
+  { path: '', pathMatch: 'full', redirectTo: 'home' }
 ];
 
 @NgModule({
