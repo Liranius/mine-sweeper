@@ -2,10 +2,8 @@
   "extends": [
     "./tslint.codelyzer.json",
     "tslint:recommended",
+    "tslint-plugin-prettier",
     "tslint-config-prettier"
-  ],
-  "rulesDirectory": [
-    "tslint-plugin-prettier"
   ],
   "rules": {
     "prettier": true,
@@ -102,7 +100,7 @@
       true,
       "allow-declarations"
     ],
-    "no-non-null-assertion": true,
+    "no-non-null-assertion": false,
     "no-redundant-jsdoc": true,
     "no-reference": true,
     "no-require-imports": true,
