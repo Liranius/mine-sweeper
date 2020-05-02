@@ -1,6 +1,5 @@
-import { Point2d } from '../../../../../../shared/models/point-2d';
-
 import { Mine, MineState } from './mine';
+import { Point2d } from './point-2d';
 
 export enum CellState {
   Unrevealed,
