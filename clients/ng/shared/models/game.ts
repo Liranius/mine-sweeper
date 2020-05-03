@@ -6,6 +6,11 @@ export interface GameConfig {
   mineCount: number;
 }
 
+export type PresetLevel = 'easy' | 'normal' | 'hard';
+export function isPresetLevel(arg: any): arg is PresetLevel {
+  return arg === 'easy' || arg === 'normal' || arg === 'hard';
+}
+
 export enum GameResult {
   Win = 'Win',
   Lose = 'Lose'

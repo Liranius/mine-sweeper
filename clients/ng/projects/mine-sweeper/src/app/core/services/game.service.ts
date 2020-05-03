@@ -2,13 +2,8 @@ import { Injectable } from '@angular/core';
 import { of, Observable } from 'rxjs';
 
 import { CellAction, CellOperation, CellResult, CellState } from '../../../../../../shared/models/cell';
-import { CellOperationResult, GameConfig, GameResult } from '../../../../../../shared/models/game';
+import { isPresetLevel, CellOperationResult, GameConfig, GameResult, PresetLevel } from '../../../../../../shared/models/game';
 import { Minefield } from '../../../../../../shared/models/minefield';
-
-type PresetLevel = 'easy' | 'normal' | 'hard';
-function isPresetLevel(arg: any): arg is PresetLevel {
-  return arg === 'easy' || arg === 'normal' || arg === 'hard';
-}
 
 @Injectable({
   providedIn: 'root'
