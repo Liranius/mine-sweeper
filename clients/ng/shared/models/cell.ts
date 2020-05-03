@@ -8,6 +8,15 @@ export enum CellState {
   Revealed
 }
 
+export interface CellAction<T extends CellState> {
+  position: Point2d;
+  state: T;
+}
+
+export interface CellResult<T extends CellState> extends CellAction<T> {
+  result: T extends CellState.Revealed ? number : undefined; // Total mines in adjacent cells, -1 means mine in current cell is exploded.
+}
+
 export class Cell {
   get mine(): Mine | undefined {
     return this._mine;
