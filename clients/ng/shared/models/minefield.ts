@@ -18,6 +18,13 @@ export class Minefield {
     }
   }
 
+  getNeighborCells(cell: Cell): Cell[] {
+    return this.cells
+      .slice(cell.position.x - 1, cell.position.x + 2)
+      .reduce((pre, cur) => pre.concat(cur.slice(cell.position.y - 1, cell.position.y + 2)), [])
+      .filter(neighbor => !!neighbor);
+  }
+
   private canPlaceMineIn(cell: Cell): boolean {
     if (cell.mine) {
       return false;
@@ -27,13 +34,6 @@ export class Minefield {
     return this.getNeighborCells(cell)
       .map(neighbor => neighbor.mine)
       .includes(undefined);
-  }
-
-  private getNeighborCells(cell: Cell): Cell[] {
-    return this.cells
-      .slice(cell.position.x - 1, cell.position.x + 2)
-      .reduce((pre, cur) => pre.concat(cur.slice(cell.position.y - 1, cell.position.y + 2)), [])
-      .filter(neighbor => !!neighbor);
   }
 
   private pickARandomCell(): Cell {
