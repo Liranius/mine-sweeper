@@ -1,0 +1,25 @@
+<ng-container *ngIf="!isSettingCustomGame; else customGamePanel">
+  <p>Welcome to play my Mine Sweeper game!</p>
+  <button type="button" class="d-block" (click)="startNewGame('easy')">Easy</button>
+  <button type="button" class="d-block" (click)="startNewGame('normal')">Normal</button>
+  <button type="button" class="d-block" (click)="startNewGame('hard')">Hard</button>
+  <button type="button" class="d-block" (click)="setCustomGame()">Custom</button>
+</ng-container>
+<ng-template #customGamePanel>
+  <form>
+    <div class="form-group">
+      <input type="number" class="form-control" name="width" title="Width" placeholder="Width" min="9" max="30"
+             [(ngModel)]="customConfig.width"/>
+    </div>
+    <div class="form-group">
+      <input type="number" class="form-control" name="height" title="Height" placeholder="Height" min="9" max="24"
+             [(ngModel)]="customConfig.height"/>
+    </div>
+    <div class="form-group">
+      <input type="number" class="form-control" name="mineCount" title="Mine Count" placeholder="Mine Count" min="10"
+             [max]="(customConfig.width - 1) * (customConfig.height - 1)" [(ngModel)]="customConfig.mineCount"/>
+    </div>
+    <button type="submit" class="d-block" (click)="startNewGame(customConfig)">Custom</button>
+    <button type="button" class="d-block" (click)="cancelCustomGameSetting()">Cancel</button>
+  </form>
+</ng-template>

@@ -1,11 +1,12 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
 import { COMPONENTS } from './components';
 import { DIRECTIVES } from './directives';
 import { PIPES } from './pipes';
 
-const MODULES = [CommonModule];
+const MODULES = [CommonModule, FormsModule];
 
 @NgModule({
   imports: [...MODULES],
