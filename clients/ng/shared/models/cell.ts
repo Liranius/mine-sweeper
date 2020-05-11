@@ -21,17 +21,19 @@ export interface CellAction {
   operation: CellOperation;
 }
 
-export type CellResult = {
-  position: Point2d;
-} & (
+export type CellResultData =
   | {
       state: CellState.Flagged | CellState.Unrevealed | CellState.Marked;
     }
   | {
       state: CellState.Revealed;
       result: number; // Total mines in adjacent cells, -1 means mine in current cell is exploded.
-    }
-);
+    };
+
+export interface CellResult {
+  position: Point2d;
+  result: CellResultData;
+}
 
 export class Cell {
   get mine(): Mine | undefined {

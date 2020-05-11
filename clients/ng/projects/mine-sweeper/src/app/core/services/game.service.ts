@@ -61,7 +61,9 @@ export class GameService {
         target.state = CellState.Flagged;
         cellResults.push({
           position: target.position,
-          state: target.state
+          result: {
+            state: target.state
+          }
         });
         break;
       }
@@ -73,7 +75,9 @@ export class GameService {
         target.state = CellState.Marked;
         cellResults.push({
           position: target.position,
-          state: target.state
+          result: {
+            state: target.state
+          }
         });
         break;
       }
@@ -85,7 +89,9 @@ export class GameService {
         target.state = CellState.Unrevealed;
         cellResults.push({
           position: target.position,
-          state: target.state
+          result: {
+            state: target.state
+          }
         });
         break;
       }
@@ -100,8 +106,10 @@ export class GameService {
           this.end(GameResult.Lose);
           cellResults.push({
             position: target.position,
-            state: target.state,
-            result: -1
+            result: {
+              state: target.state,
+              result: -1
+            }
           });
           break;
         }
@@ -111,8 +119,10 @@ export class GameService {
 
         cellResults.push({
           position: target.position,
-          state: target.state,
-          result
+          result: {
+            state: target.state,
+            result
+          }
         });
 
         if (!result) {
