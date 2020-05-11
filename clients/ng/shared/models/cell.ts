@@ -32,7 +32,7 @@ export type CellResultData =
 
 export interface CellResult {
   position: Point2d;
-  result: CellResultData;
+  data: CellResultData;
 }
 
 export class Cell {

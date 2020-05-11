@@ -61,7 +61,7 @@ export class GameService {
         target.state = CellState.Flagged;
         cellResults.push({
           position: target.position,
-          result: {
+          data: {
             state: target.state
           }
         });
@@ -75,7 +75,7 @@ export class GameService {
         target.state = CellState.Marked;
         cellResults.push({
           position: target.position,
-          result: {
+          data: {
             state: target.state
           }
         });
@@ -89,7 +89,7 @@ export class GameService {
         target.state = CellState.Unrevealed;
         cellResults.push({
           position: target.position,
-          result: {
+          data: {
             state: target.state
           }
         });
@@ -106,7 +106,7 @@ export class GameService {
           this.end(GameResult.Lose);
           cellResults.push({
             position: target.position,
-            result: {
+            data: {
               state: target.state,
               result: -1
             }
@@ -119,7 +119,7 @@ export class GameService {
 
         cellResults.push({
           position: target.position,
-          result: {
+          data: {
             state: target.state,
             result
           }
