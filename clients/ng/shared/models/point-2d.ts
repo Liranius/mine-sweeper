@@ -1,3 +1,4 @@
-export class Point2d {
-  constructor(public readonly x: number, public readonly y: number) {}
+export interface Point2d {
+  readonly x: number;
+  readonly y: number;
 }
