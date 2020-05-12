@@ -1,2 +1,4 @@
-<p>game works!</p>
-<router-outlet></router-outlet>
+<div class="d-flex flex-column justify-content-center align-items-center vh-100 overflow-hidden" [ngSwitch]="position">
+  <mswp-home *ngSwitchCase="'home'" (gameStart)="startGameWith($event)"></mswp-home>
+  <mswp-game-main *ngSwitchCase="'game'" [config]="gameConfig"></mswp-game-main>
+</div>

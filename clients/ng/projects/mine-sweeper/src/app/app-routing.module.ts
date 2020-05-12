@@ -1,14 +1,9 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { HomeComponent } from './core/components/home/home.component';
-import { LoginComponent } from './core/components/login/login.component';
+import { GameComponent } from './game/game.component';
 
-const routes: Routes = [
-  { path: 'home', component: HomeComponent },
-  { path: 'login', component: LoginComponent },
-  { path: 'game', loadChildren: () => import('./game/game.module').then(m => m.GameModule) }
-];
+const routes: Routes = [{ path: '', component: GameComponent }];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
