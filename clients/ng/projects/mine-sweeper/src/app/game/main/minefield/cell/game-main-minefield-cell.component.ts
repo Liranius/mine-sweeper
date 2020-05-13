@@ -1,4 +1,6 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
+import { timer, NEVER } from 'rxjs';
+import { take } from 'rxjs/operators';
 
 import { CellAction, CellOperation, CellResultData, CellState } from '../../../../../../../../shared/models/cell';
 import { Point2d } from '../../../../../../../../shared/models/point-2d';
@@ -17,6 +19,10 @@ export class GameMainMinefieldCellComponent implements OnChanges {
   @Input() y?: number;
 
   private position?: Point2d;
+  private readonly touchDoublePressThreshold = 300;
+  private readonly touchLongPressThreshold = 500;
+  private touchLongPressTimer = NEVER.subscribe();
+  private touchDoublePressTimer = NEVER.subscribe();
 
   constructor() {}
 
@@ -52,12 +58,72 @@ export class GameMainMinefieldCellComponent implements OnChanges {
     }
   }
 
-  operateCell(event: MouseEvent): void {
+  cancelTouchstartWhenMoveAway(event: TouchEvent): void {
+    const rect = (event.target as HTMLElement).getBoundingClientRect();
+    const { clientX, clientY } = event.targetTouches[0];
+
+    if (
+      (clientX - rect.right > 0 || rect.left - clientX > 0 || clientY - rect.bottom > 0 || rect.top - clientY > 0) &&
+      !this.touchLongPressTimer.closed
+    ) {
+      this.touchLongPressTimer.unsubscribe();
+    }
+  }
+
+  handleClick(event?: MouseEvent): void {
+    event?.preventDefault();
+
+    this.operateCell(event?.button || 0);
+  }
+
+  handleContextMenu(event?: MouseEvent): void {
+    event?.preventDefault();
+
+    this.operateCell(2);
+  }
+
+  handleDblClick(event?: MouseEvent): void {
+    event?.preventDefault();
+
+    this.operateCell(1);
+  }
+
+  simulateClickOrDblClick(event: TouchEvent): void {
+    event.preventDefault();
+
+    if (!this.touchDoublePressTimer.closed) {
+      if (!this.touchLongPressTimer.closed) {
+        this.touchLongPressTimer.unsubscribe();
+        this.touchDoublePressTimer = timer(this.touchDoublePressThreshold)
+          .pipe(take(1))
+          .subscribe(() => this.handleClick());
+      }
+    } else {
+      this.touchDoublePressTimer.unsubscribe();
+      this.handleDblClick();
+      this.touchDoublePressTimer = NEVER.subscribe();
+    }
+  }
+
+  simulateRightClick(event: TouchEvent): void {
+    event.preventDefault();
+
+    this.touchLongPressTimer = timer(this.touchLongPressThreshold)
+      .pipe(take(1))
+      .subscribe(() => {
+        if (!this.touchLongPressTimer.closed) {
+          this.touchLongPressTimer.unsubscribe();
+          this.handleContextMenu();
+        }
+      });
+  }
+
+  private operateCell(button: MouseEvent['button']): void {
     if (!this.data) {
       throw new Error(`[GameMainMinefieldCell Component] Cell data is not correctly set.`);
     }
 
-    switch (event.button) {
+    switch (button) {
       case 0: {
         if (this.data.state === CellState.Marked || this.data.state === CellState.Unrevealed) {
           this.operateCellImpl(CellOperation.Reveal);
