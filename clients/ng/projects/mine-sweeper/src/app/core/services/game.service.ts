@@ -15,11 +15,7 @@ export class GameService {
     hard: { width: 30, height: 16, mineCount: 99 }
   };
 
-  get result(): GameResult | undefined {
-    return this._result;
-  }
-
-  private _result?: GameResult;
+  private result?: GameResult;
   private readonly gameEndedError = new Error('[Game Service] Game is ended. No more operation accepted.');
   private minefield?: Minefield;
 
@@ -28,24 +24,24 @@ export class GameService {
       throw new Error('[Game Service] Game not started.');
     }
 
-    if (this._result) {
+    if (this.result) {
       throw this.gameEndedError;
     }
 
-    return of({ cells: this.operateCellImpl(this.minefield, action), result: this._result ? this._result : undefined });
+    return of({ cells: this.operateCellImpl(this.minefield, action), result: this.result ? this.result : undefined });
   }
 
   start(arg: PresetLevel | GameConfig): Observable<GameConfig> {
     const config = isPresetLevel(arg) ? GameService.Preset[arg] : arg;
 
-    this._result = undefined;
+    this.result = undefined;
     this.minefield = new Minefield(...(Object.values(config) as [number, number, number]));
 
     return of(config);
   }
 
   private end(result: GameResult): void {
-    this._result = result;
+    this.result = result;
   }
 
   private operateCellImpl(minefield: Minefield, action: CellAction): CellResult[] {
@@ -153,6 +149,13 @@ export class GameService {
       }
       default:
         throw new Error(`[Game Service] Unknown cell operation "${action.operation}".`);
+    }
+
+    if (
+      !minefield.cells.reduce((pre, cur) => pre.concat(cur)).filter(cell => cell.state === CellState.Unrevealed).length &&
+      this.result !== GameResult.Lose
+    ) {
+      this.end(GameResult.Win);
     }
 
     return cellResults;
