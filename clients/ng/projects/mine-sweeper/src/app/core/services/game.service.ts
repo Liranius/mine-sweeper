@@ -128,7 +128,7 @@ export class GameService {
         if (!result) {
           neighbors
             .map(cell => this.operateCellImpl(minefield, { position: cell.position, operation: CellOperation.Reveal }))
-            .reduce((pre, cur) => pre.concat(cur), cellResults);
+            .forEach(results => cellResults.push(...results));
         }
         break;
       }
