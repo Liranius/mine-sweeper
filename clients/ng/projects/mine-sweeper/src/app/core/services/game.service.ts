@@ -111,6 +111,11 @@ export class GameService {
               result: -1
             }
           });
+          this.minefield!.cells.reduce((pre, cur) => pre.concat(cur))
+            .filter(cell => cell !== target)
+            .filter(cell => cell.state !== CellState.Revealed && cell.state !== CellState.Flagged)
+            .map(cell => this.operateCellImpl(minefield, { position: cell.position, operation: CellOperation.Reveal }))
+            .forEach(results => cellResults.push(...results));
           break;
         }
 
