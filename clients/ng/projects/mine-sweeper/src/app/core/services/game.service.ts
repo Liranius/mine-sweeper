@@ -15,11 +15,7 @@ export class GameService {
     hard: { width: 30, height: 16, mineCount: 99 }
   };
 
-  get result(): GameResult | undefined {
-    return this._result;
-  }
-
-  private _result?: GameResult;
+  private result?: GameResult;
   private readonly gameEndedError = new Error('[Game Service] Game is ended. No more operation accepted.');
   private minefield?: Minefield;
 
@@ -28,24 +24,24 @@ export class GameService {
       throw new Error('[Game Service] Game not started.');
     }
 
-    if (this._result) {
+    if (this.result) {
       throw this.gameEndedError;
     }
 
-    return of({ cells: this.operateCellImpl(this.minefield, action), result: this._result ? this._result : undefined });
+    return of({ cells: this.operateCellImpl(this.minefield, action), result: this.result ? this.result : undefined });
   }
 
   start(arg: PresetLevel | GameConfig): Observable<GameConfig> {
     const config = isPresetLevel(arg) ? GameService.Preset[arg] : arg;
 
-    this._result = undefined;
+    this.result = undefined;
     this.minefield = new Minefield(...(Object.values(config) as [number, number, number]));
 
     return of(config);
   }
 
   private end(result: GameResult): void {
-    this._result = result;
+    this.result = result;
   }
 
   private operateCellImpl(minefield: Minefield, action: CellAction): CellResult[] {
@@ -61,7 +57,9 @@ export class GameService {
         target.state = CellState.Flagged;
         cellResults.push({
           position: target.position,
-          state: target.state
+          data: {
+            state: target.state
+          }
         });
         break;
       }
@@ -73,7 +71,9 @@ export class GameService {
         target.state = CellState.Marked;
         cellResults.push({
           position: target.position,
-          state: target.state
+          data: {
+            state: target.state
+          }
         });
         break;
       }
@@ -85,7 +85,9 @@ export class GameService {
         target.state = CellState.Unrevealed;
         cellResults.push({
           position: target.position,
-          state: target.state
+          data: {
+            state: target.state
+          }
         });
         break;
       }
@@ -100,9 +102,16 @@ export class GameService {
           this.end(GameResult.Lose);
           cellResults.push({
             position: target.position,
-            state: target.state,
-            result: -1
+            data: {
+              state: target.state,
+              result: -1
+            }
           });
+          this.minefield!.cells.reduce((pre, cur) => pre.concat(cur))
+            .filter(cell => cell !== target)
+            .filter(cell => cell.state !== CellState.Revealed && cell.state !== CellState.Flagged)
+            .map(cell => this.operateCellImpl(minefield, { position: cell.position, operation: CellOperation.Reveal }))
+            .forEach(results => cellResults.push(...results));
           break;
         }
 
@@ -111,14 +120,16 @@ export class GameService {
 
         cellResults.push({
           position: target.position,
-          state: target.state,
-          result
+          data: {
+            state: target.state,
+            result
+          }
         });
 
         if (!result) {
           neighbors
             .map(cell => this.operateCellImpl(minefield, { position: cell.position, operation: CellOperation.Reveal }))
-            .reduce((pre, cur) => pre.concat(cur), cellResults);
+            .forEach(results => cellResults.push(...results));
         }
         break;
       }
@@ -133,11 +144,18 @@ export class GameService {
 
         availableNeighbors
           .map(cell => this.operateCellImpl(minefield, { position: cell.position, operation: CellOperation.Reveal }))
-          .reduce((pre, cur) => pre.concat(cur), cellResults);
+          .forEach(results => cellResults.push(...results));
         break;
       }
       default:
         throw new Error(`[Game Service] Unknown cell operation "${action.operation}".`);
+    }
+
+    if (
+      !minefield.cells.reduce((pre, cur) => pre.concat(cur)).filter(cell => cell.state === CellState.Unrevealed).length &&
+      this.result !== GameResult.Lose
+    ) {
+      this.end(GameResult.Win);
     }
 
     return cellResults;

@@ -1,6 +1,7 @@
 <div class="d-flex m-auto">
-  <div class="d-flex flex-column" *ngFor="let x of (config?.width | repeatTimes)">
-    <mswp-game-main-minefield-cell *ngFor="let y of (config?.height | repeatTimes)"
-                                   [x]="x" [y]="y" (reveal)="revealCell($event)"></mswp-game-main-minefield-cell>
+  <div class="d-flex flex-column" *ngFor="let x of (config?.width | repeatTimes); trackBy: trackByIndex">
+    <mswp-game-main-minefield-cell *ngFor="let y of (config?.height | repeatTimes); trackBy: trackByIndex"
+                                   [x]="x" [y]="y" [data]="minefieldConfig?.results[x][y]"
+                                   (reveal)="revealCell($event)"></mswp-game-main-minefield-cell>
   </div>
 </div>

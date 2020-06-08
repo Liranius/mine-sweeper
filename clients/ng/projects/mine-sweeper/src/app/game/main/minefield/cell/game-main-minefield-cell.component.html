@@ -1,1 +1,3 @@
-<button type="button" class="d-block btn" (click)="revealCell()"></button>
+<button type="button" class="d-flex align-items-center justify-content-center {{data?.state === 3 ? 'btn btn-outline-dark' : ''}}"
+        (click)="handleClick($event)" (contextmenu)="handleContextMenu($event)" (dblclick)="handleDblClick($event)"
+        (touchstart)="simulateRightClick($event)" (touchmove)="cancelTouchstartWhenMoveAway($event)" (touchend)="simulateClickOrDblClick($event)">{{content}}</button>

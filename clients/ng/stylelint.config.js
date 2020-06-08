@@ -65,12 +65,12 @@ module.exports = {
     'font-weight-notation': 'numeric',
     'number-leading-zero': 'always',
     'number-no-trailing-zeros': true,
-    'string-quotes': [
-      'double',
-      {
-        'avoidEscape': true
-      }
-    ],
+    // 'string-quotes': [
+    //   'double',
+    //   {
+    //     'avoidEscape': true
+    //   }
+    // ],
     'length-zero-no-unit': true,
     'unit-case': 'lower',
     'value-keyword-case': [

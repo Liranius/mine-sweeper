@@ -20,9 +20,12 @@ export class Minefield {
 
   getNeighborCells(cell: Cell): Cell[] {
     return this.cells
-      .slice(cell.position.x - 1, cell.position.x + 2)
-      .reduce((pre, cur) => pre.concat(cur.slice(cell.position.y - 1, cell.position.y + 2)), [])
-      .filter(neighbor => !!neighbor);
+      .slice(Math.max(0, cell.position.x - 1), Math.min(this.cells.length, cell.position.x + 2))
+      .reduce(
+        (pre, cur) => pre.concat(cur.slice(Math.max(0, cell.position.y - 1), Math.min(this.cells[0].length, cell.position.y + 2))),
+        []
+      )
+      .filter(neighbor => neighbor !== cell);
   }
 
   private canPlaceMineIn(cell: Cell): boolean {

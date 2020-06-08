@@ -1,5 +1,6 @@
 /* Importing Bootstrap SCSS file. */
-@import "./shared";
+@import './shared';
 
-@import "~bootstrap/scss/reboot";
-@import "~bootstrap/scss/utilities";
+@import '~bootstrap/scss/buttons';
+@import '~bootstrap/scss/reboot';
+@import '~bootstrap/scss/utilities';

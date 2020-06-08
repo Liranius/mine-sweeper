@@ -1,9 +1,13 @@
-import { CellResult } from './cell';
+import { CellResult, CellResultData } from './cell';
 
 export interface GameConfig {
   width: number;
   height: number;
   mineCount: number;
+}
+
+export interface MinefieldConfig extends GameConfig {
+  results: CellResultData[][];
 }
 
 export type PresetLevel = 'easy' | 'normal' | 'hard';
